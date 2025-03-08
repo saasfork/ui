@@ -1,84 +1,128 @@
-<!--
-Get your module up and running quickly.
+# SaasFork UI
 
-Find and replace all on all files (CMD+SHIFT+F):
-- Name: My Module
-- Package name: my-module
-- Description: My new Nuxt module
--->
+UI component library for SaasFork.
 
-# My Module
+## Installation
 
-[![npm version][npm-version-src]][npm-version-href]
-[![npm downloads][npm-downloads-src]][npm-downloads-href]
-[![License][license-src]][license-href]
-[![Nuxt][nuxt-src]][nuxt-href]
+### Basic Installation
 
-My new Nuxt module for doing amazing things.
-
-- [✨ &nbsp;Release Notes](/CHANGELOG.md)
-<!-- - [🏀 Online playground](https://stackblitz.com/github/your-org/my-module?file=playground%2Fapp.vue) -->
-<!-- - [📖 &nbsp;Documentation](https://example.com) -->
-
-## Features
-
-<!-- Highlight some of the features your module provide here -->
-- ⛰ &nbsp;Foo
-- 🚠 &nbsp;Bar
-- 🌲 &nbsp;Baz
-
-## Quick Setup
-
-Install the module to your Nuxt application with one command:
+To install this module in your project:
 
 ```bash
-npx nuxi module add my-module
+# With npm
+npm install @saasfork-ui
+
+# With yarn
+yarn add @saasfork-ui
+
+# With pnpm
+pnpm add @saasfork-ui
 ```
 
-That's it! You can now use My Module in your Nuxt app ✨
+### As a Nuxt.js Module
 
+1. Install the package:
 
-## Contribution
+```bash
+# With npm
+npm install @saasfork-ui
 
-<details>
-  <summary>Local development</summary>
+# With yarn
+yarn add @saasfork-ui
+
+# With pnpm
+pnpm add @saasfork-ui
+```
+
+2. Add the module to your `nuxt.config.js` or `nuxt.config.ts` file:
+
+```js
+// nuxt.config.js or nuxt.config.ts
+export default defineNuxtConfig({
+  modules: [
+    '@saasfork-ui/nuxt'
+  ],
   
-  ```bash
-  # Install dependencies
-  npm install
-  
-  # Generate type stubs
-  npm run dev:prepare
-  
-  # Develop with the playground
-  npm run dev
-  
-  # Build the playground
-  npm run dev:build
-  
-  # Run ESLint
-  npm run lint
-  
-  # Run Vitest
-  npm run test
-  npm run test:watch
-  
-  # Release new version
-  npm run release
-  ```
+  // Optional module configuration
+  saasforkUI: {
+    // your configuration options here
+  }
+})
+```
 
-</details>
+## Usage
 
+You can import components as follows:
 
-<!-- Badges -->
-[npm-version-src]: https://img.shields.io/npm/v/my-module/latest.svg?style=flat&colorA=020420&colorB=00DC82
-[npm-version-href]: https://npmjs.com/package/my-module
+```jsx
+import { Button, Input } from '@saasfork-ui';
 
-[npm-downloads-src]: https://img.shields.io/npm/dm/my-module.svg?style=flat&colorA=020420&colorB=00DC82
-[npm-downloads-href]: https://npm.chart.dev/my-module
+const MyComponent = () => {
+  return (
+    <div>
+      <Input placeholder="Enter your text" />
+      <Button>Click me</Button>
+    </div>
+  );
+};
+```
 
-[license-src]: https://img.shields.io/npm/l/my-module.svg?style=flat&colorA=020420&colorB=00DC82
-[license-href]: https://npmjs.com/package/my-module
+### In Nuxt.js
 
-[nuxt-src]: https://img.shields.io/badge/Nuxt-020420?logo=nuxt.js
-[nuxt-href]: https://nuxt.com
+When installed as a Nuxt.js module, components are automatically available:
+
+```vue
+<template>
+  <div>
+    <SfInput placeholder="Enter your text" />
+    <SfButton>Click me</SfButton>
+  </div>
+</template>
+
+<script setup>
+// No imports needed! Components are globally registered
+</script>
+```
+
+## Development
+
+### Prerequisites
+
+- Node.js (version 16 or higher)
+- npm, yarn, or pnpm
+
+### Installing dependencies
+
+```bash
+npm install
+# or
+yarn
+# or
+pnpm install
+```
+
+### Starting Storybook
+
+To launch the Storybook development environment:
+
+```bash
+npm run storybook
+# or
+yarn storybook
+# or
+pnpm storybook
+```
+
+Storybook will be accessible at [http://localhost:6006](http://localhost:6006).
+
+### Build
+
+To create a production version of the library:
+
+```bash
+npm run build
+# or
+yarn build
+# or
+pnpm build
+```
