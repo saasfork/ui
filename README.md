@@ -103,7 +103,7 @@ pnpm install
 
 ### Starting Storybook
 
-To launch the Storybook development environment:
+To launch the Storybook development environment (in playground):
 
 ```bash
 npm run storybook
