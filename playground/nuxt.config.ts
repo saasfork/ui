@@ -5,6 +5,7 @@ export default defineNuxtConfig({
     '../src/module',
     '@nuxtjs/tailwindcss',
     '@nuxtjs/storybook',
+    '@nuxt/icon',
   ],
   devtools: { enabled: true },
   css: ['~/assets/styles.scss'],

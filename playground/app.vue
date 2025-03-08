@@ -26,6 +26,13 @@ const links = [
           />
         </svg>
       </template>
+
+      <template #actions>
+        <Icon
+          name="uil:github"
+          size="1.4rem"
+        />
+      </template>
     </SFNavbar>
   </div>
 </template>
