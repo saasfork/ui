@@ -23,14 +23,14 @@ defineProps<{
             </slot>
           </div>
           <div class="links">
-            <a
+            <NuxtLink
               v-for="link in links"
               :key="link.url"
-              :href="link.url"
+              :to="link.url"
               :class="{ selected: current === link.url }"
             >
               {{ link.name }}
-            </a>
+            </NuxtLink>
           </div>
         </div>
         <div class="actions">
@@ -59,7 +59,7 @@ nav {
         }
 
         .links {
-          @apply hidden sm:ml-6 sm:flex sm:space-x-8;
+          @apply hidden sm:ml-6 sm:flex sm:space-x-8 h-16;
 
           a {
             @apply inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-900 hover:border-gray-300 hover:text-gray-700;
