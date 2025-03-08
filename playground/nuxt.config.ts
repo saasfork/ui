@@ -1,3 +1,5 @@
+import { defineNuxtConfig } from 'nuxt/config'
+
 export default defineNuxtConfig({
   modules: [
     '../src/module',
@@ -6,5 +8,6 @@ export default defineNuxtConfig({
   ],
   devtools: { enabled: true },
   css: ['~/assets/styles.scss'],
+  compatibilityDate: '2025-03-08',
   myModule: {},
 })

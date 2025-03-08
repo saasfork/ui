@@ -5,13 +5,14 @@ const config: StorybookConfig = {
     '../../src/runtime/components/ui/**/*.stories.ts',
   ],
   addons: [
+    '@storybook/addon-links',
     '@storybook/addon-essentials',
-    '@chromatic-com/storybook',
-    '@storybook/experimental-addon-test',
+    '@storybook/addon-interactions',
   ],
   framework: {
     name: '@storybook-vue/nuxt',
-    options: {},
+    options: { },
   },
 }
+
 export default config

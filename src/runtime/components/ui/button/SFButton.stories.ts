@@ -4,7 +4,6 @@ import SFButton from './SFButton.vue'
 const meta = {
   title: 'UI/SFButton',
   component: SFButton,
-  tags: ['autodocs'],
   parameters: {
     docs: {
       description: {
