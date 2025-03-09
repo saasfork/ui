@@ -6,9 +6,9 @@ import SFFormError from './SFFormError.vue'
 type StoryArgs = {
   modelValue: string
   id: string
-  isInError: boolean
   placeholder: string
   errorMessages?: string[]
+  hint?: string
 }
 
 const meta = {
@@ -25,8 +25,8 @@ const meta = {
   <template #label>
     Label
     </template>
-    <template #default="{ id, isInError }">
-      <SFInputField v-bind="{ id, isInError }"  />
+    <template #default="{ id }">
+      <SFInputField v-bind="{ id }"  />
     </template>
     <template #error>
         <SFFormError v-for="error in args.errorMessages" :key="error">
@@ -47,16 +47,16 @@ const meta = {
         },
       },
     },
-    isInError: {
-      description: 'Field error state',
+    placeholder: {
+      description: 'Field placeholder',
       table: {
         type: {
-          summary: 'boolean',
+          summary: 'string',
         },
       },
     },
-    placeholder: {
-      description: 'Field placeholder',
+    hint: {
+      description: 'Field hint text',
       table: {
         type: {
           summary: 'string',
@@ -82,6 +82,9 @@ const meta = {
                 {{ error }}
             </SFFormError>
         </template>
+        <template #hint>
+            {{ args.hint }}
+        </template>
       </SFFormField>
 
       <p v-if="args.modelValue">Model value: {{ args.modelValue }}</p>
@@ -97,15 +100,21 @@ export const Default: Story = {
     modelValue: '',
     id: 'input',
     placeholder: 'Placeholder',
-    isInError: false,
     errorMessages: [],
+    hint: '',
   },
 }
 
 export const InError: Story = {
   args: {
     ...Default.args,
-    isInError: true,
     errorMessages: ['Error message'],
+  },
+}
+
+export const WithHint: Story = {
+  args: {
+    ...Default.args,
+    hint: 'Hint text',
   },
 }

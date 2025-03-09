@@ -1,23 +1,54 @@
 <script setup lang="ts">
+import { computed, useSlots } from 'vue'
+
 defineProps<{
   id: string
-  isInError?: boolean
 }>()
+
+const slots = useSlots()
+
+const hasErrorContent = computed(() => {
+  const errorSlot = slots.error?.()
+
+  if (!errorSlot || errorSlot.length === 0) {
+    return false
+  }
+
+  // Vérifie si au moins un nœud du slot a des enfants
+  return errorSlot.some((node) => {
+    // Vérifie s'il y a des enfants textuels
+    const textContent = node.children !== undefined && node.children !== null
+      ? typeof node.children === 'string'
+        ? node.children.trim() !== ''
+        : Array.isArray(node.children) ? node.children.length > 0 : false
+      : false
+
+    return textContent
+  })
+})
 </script>
 
 <template>
   <div>
     <label
       :for="id"
-      :class="{ 'is-in-error': isInError }"
+      :class="{ 'is-in-error': hasErrorContent }"
     >
       <slot name="label" />
     </label>
     <div class="input">
       <slot
         :id="id"
-        :is-in-error="isInError"
+        :is-in-error="hasErrorContent"
       />
+    </div>
+    <div
+      v-if="!hasErrorContent"
+      class="hint"
+    >
+      <p>
+        <slot name="hint" />
+      </p>
     </div>
     <div class="errors">
       <slot name="error" />
@@ -31,6 +62,12 @@ label {
 
   &.is-in-error {
     @apply text-sm/6 text-red-600;
+  }
+}
+
+.hint {
+  p {
+    @apply mt-1 text-sm text-gray-500;
   }
 }
 

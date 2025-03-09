@@ -47,6 +47,7 @@ const errorMessages = ref([])
         <SFInputField
           v-model="modelValue"
           v-bind="props"
+          placeholder="Coucou"
         />
       </template>
       <template #error>
