@@ -6,6 +6,7 @@ import SFFormError from './SFFormError.vue'
 type StoryArgs = {
   modelValue: string
   id: string
+  required: boolean
   placeholder: string
   errorMessages?: string[]
   hint?: string
@@ -75,7 +76,7 @@ const meta = {
             Label
         </template>
         <template #default="props">
-          <SFInputField v-model="args.modelValue" :placeholder="args.placeholder" v-bind="props"  />
+          <SFInputField v-model="args.modelValue" :placeholder="args.placeholder" :required="args.required" v-bind="props"  />
         </template>
         <template #error>
             <SFFormError v-for="error in args.errorMessages" :key="error">
@@ -98,6 +99,7 @@ type Story = StoryObj<typeof meta>
 export const Default: Story = {
   args: {
     modelValue: '',
+    required: true,
     id: 'input',
     placeholder: 'Placeholder',
     errorMessages: [],
@@ -115,6 +117,7 @@ export const InError: Story = {
 export const WithHint: Story = {
   args: {
     ...Default.args,
+    required: false,
     hint: 'Hint text',
   },
 }

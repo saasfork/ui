@@ -7,6 +7,19 @@ defineProps<{
 
 const slots = useSlots()
 
+const hasRequiredInput = computed(() => {
+  const defaultSlot = slots.default?.()
+
+  if (!defaultSlot || defaultSlot.length === 0) return false
+
+  return defaultSlot.some((node) => {
+    return node.props && (
+      node.props.required === true
+      || node.props.required === ''
+    )
+  })
+})
+
 const hasErrorContent = computed(() => {
   const errorSlot = slots.error?.()
 
@@ -14,7 +27,6 @@ const hasErrorContent = computed(() => {
     return false
   }
 
-  // Vérifie si au moins un nœud du slot a des enfants
   return errorSlot.some((node) => {
     // Vérifie s'il y a des enfants textuels
     const textContent = node.children !== undefined && node.children !== null
@@ -35,6 +47,10 @@ const hasErrorContent = computed(() => {
       :class="{ 'is-in-error': hasErrorContent }"
     >
       <slot name="label" />
+      <span
+        v-if="hasRequiredInput"
+        aria-hidden="true"
+      >*</span>
     </label>
     <div class="input">
       <slot
