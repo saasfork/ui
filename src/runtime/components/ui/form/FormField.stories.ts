@@ -12,7 +12,7 @@ type StoryArgs = {
 }
 
 const meta = {
-  title: 'UI/SFFormField',
+  title: 'UI/Form/SFFormField',
   component: SFFormField,
   parameters: {
     docs: {
