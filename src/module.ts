@@ -6,14 +6,20 @@ export default defineNuxtModule({
     configKey: 'saasForkUiModule',
   },
   // Default configuration options of the Nuxt module
-  defaults: {},
-  setup(_options, _nuxt) {
+  defaults: {
+    global: true, // Rendre les composants disponibles globalement
+  },
+  setup(options, _nuxt) {
     const resolver = createResolver(import.meta.url)
 
-    // Ajouter automatiquement les composants
+    // Ajouter automatiquement les composants (une seule fois)
     addComponentsDir({
       path: resolver.resolve('runtime/components'),
-      pathPrefix: false,
+      pathPrefix: false, // Ne pas ajouter de préfixe de chemin
+      prefix: '', // Pas de préfixe pour les noms de composants
+      global: options.global,
     })
+
+    // Ne plus utiliser le hook components:dirs car addComponentsDir fait déjà le travail
   },
 })

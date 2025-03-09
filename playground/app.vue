@@ -1,14 +1,18 @@
 <script setup>
-const links = [
-  { name: 'Home', url: '/' },
-  { name: 'About', url: '/about' },
-  { name: 'Contact', url: '/contact' },
-]
+// const links = [
+//   { name: 'Home', url: '/' },
+//   { name: 'About', url: '/about' },
+//   { name: 'Contact', url: '/contact' },
+// ]
+
+const id = ref('input')
+const modelValue = ref('')
+const errorMessages = ref([])
 </script>
 
 <template>
   <div>
-    <SFNavbar
+    <!-- <SFNavbar
       :links="links"
       :current="$route.path"
     >
@@ -33,6 +37,26 @@ const links = [
           size="1.4rem"
         />
       </template>
-    </SFNavbar>
+    </SFNavbar> -->
+
+    <SFFormField :id="id">
+      <template #label>
+        Label
+      </template>
+      <template #default="props">
+        <SFInputField
+          v-model="modelValue"
+          v-bind="props"
+        />
+      </template>
+      <template #error>
+        <SFFormError
+          v-for="error in errorMessages"
+          :key="error"
+        >
+          {{ error }}
+        </SFFormError>
+      </template>
+    </SFFormField>
   </div>
 </template>
