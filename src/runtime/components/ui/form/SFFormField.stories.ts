@@ -121,3 +121,10 @@ export const WithHint: Story = {
     hint: 'Hint text',
   },
 }
+
+export const WithHiddenLabel: Story = {
+  args: {
+    ...Default.args,
+    labelHidden: true,
+  },
+}

@@ -3,6 +3,7 @@ import { computed, useSlots } from 'vue'
 
 defineProps<{
   id: string
+  labelHidden?: boolean
 }>()
 
 const slots = useSlots()
@@ -44,7 +45,7 @@ const hasErrorContent = computed(() => {
   <div>
     <label
       :for="id"
-      :class="{ 'is-in-error': hasErrorContent }"
+      :class="{ 'is-in-error': hasErrorContent, 'ssrOnly': labelHidden }"
     >
       <slot name="label" />
       <span
@@ -74,7 +75,7 @@ const hasErrorContent = computed(() => {
 
 <style lang="scss">
 label {
-  @apply block text-sm/6 font-medium text-gray-900;
+  @apply block text-sm/6 font-medium text-left text-gray-900;
 
   &.is-in-error {
     @apply text-sm/6 text-red-600;
@@ -92,6 +93,10 @@ label {
 }
 
 .errors {
-  @apply mt-2 min-h-7;
+  @apply mt-2 min-h-5;
+}
+
+.ssrOnly {
+  @apply sr-only;
 }
 </style>

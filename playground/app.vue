@@ -7,7 +7,9 @@
 
 const id = ref('input')
 const modelValue = ref('')
-const errorMessages = ref([])
+const errorMessages = ref([
+  // 'This field is required',
+])
 </script>
 
 <template>
@@ -59,5 +61,9 @@ const errorMessages = ref([])
         </SFFormError>
       </template>
     </SFFormField>
+
+    <SFButton type="submit">
+      Join the waitlist
+    </SFButton>
   </div>
 </template>

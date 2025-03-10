@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 
 defineProps<{
-  links: {
+  links?: {
     name: string
     url: string
   }[]
@@ -46,7 +46,10 @@ const open = ref(false)
               {{ logoTitle }}
             </slot>
           </div>
-          <div class="links">
+          <div
+            v-if="links"
+            class="links"
+          >
             <NuxtLink
               v-for="link in links"
               :key="link.url"
