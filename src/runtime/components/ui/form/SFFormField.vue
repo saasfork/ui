@@ -1,44 +1,22 @@
 <script setup lang="ts">
+import { useFieldError } from 'vee-validate'
 import { computed, useSlots } from 'vue'
 
 defineProps<{
   id: string
   labelHidden?: boolean
+  required?: boolean
 }>()
 
 const slots = useSlots()
 
-const hasRequiredInput = computed(() => {
+const name = computed(() => {
   const defaultSlot = slots.default?.()
-
-  if (!defaultSlot || defaultSlot.length === 0) return false
-
-  return defaultSlot.some((node) => {
-    return node.props && (
-      node.props.required === true
-      || node.props.required === ''
-    )
-  })
+  if (!defaultSlot || defaultSlot.length === 0) return null
+  return defaultSlot[0].props?.name || null
 })
 
-const hasErrorContent = computed(() => {
-  const errorSlot = slots.error?.()
-
-  if (!errorSlot || errorSlot.length === 0) {
-    return false
-  }
-
-  return errorSlot.some((node) => {
-    // Vérifie s'il y a des enfants textuels
-    const textContent = node.children !== undefined && node.children !== null
-      ? typeof node.children === 'string'
-        ? node.children.trim() !== ''
-        : Array.isArray(node.children) ? node.children.length > 0 : false
-      : false
-
-    return textContent
-  })
-})
+const hasErrorContent = computed(() => !!useFieldError(name).value)
 </script>
 
 <template>
@@ -49,7 +27,7 @@ const hasErrorContent = computed(() => {
     >
       <slot name="label" />
       <span
-        v-if="hasRequiredInput"
+        v-if="required"
         aria-hidden="true"
       >*</span>
     </label>
@@ -57,6 +35,7 @@ const hasErrorContent = computed(() => {
       <slot
         :id="id"
         :is-in-error="hasErrorContent"
+        :required="required"
       />
     </div>
     <div
@@ -68,7 +47,10 @@ const hasErrorContent = computed(() => {
       </p>
     </div>
     <div class="errors">
-      <slot name="error" />
+      <ErrorMessage
+        :name="name"
+        as="p"
+      />
     </div>
   </div>
 </template>
@@ -94,6 +76,10 @@ label {
 
 .errors {
   @apply mt-2 min-h-5;
+
+  p {
+    @apply mt-2 text-sm text-red-600;
+  }
 }
 
 .ssrOnly {

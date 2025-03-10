@@ -1,20 +1,23 @@
 <script setup>
-const links = [
-  { name: 'Home', url: '/' },
-  { name: 'About', url: '/about' },
-  { name: 'Contact', url: '/contact' },
-]
+import * as yup from 'yup'
+// const links = [
+//   { name: 'Home', url: '/' },
+//   { name: 'About', url: '/about' },
+//   { name: 'Contact', url: '/contact' },
+// ]
 
-// const id = ref('input')
-// const modelValue = ref('')
+const id = ref('input')
+const modelValue = ref('')
 // const errorMessages = ref([
 //   // 'This field is required',
 // ])
+
+const validateEmail = yup.string().required().email()
 </script>
 
 <template>
   <div>
-    <SFNavbar
+    <!-- <SFNavbar
       :links="links"
       :current="$route.path"
     >
@@ -39,31 +42,33 @@ const links = [
           size="1.4rem"
         />
       </template>
-    </SFNavbar>
+    </SFNavbar> -->
 
-    <!-- <SFFormField :id="id">
-      <template #label>
-        Label
-      </template>
-      <template #default="props">
-        <SFInputField
-          v-model="modelValue"
-          v-bind="props"
-          placeholder="Coucou"
-        />
-      </template>
-      <template #error>
-        <SFFormError
-          v-for="error in errorMessages"
-          :key="error"
-        >
-          {{ error }}
-        </SFFormError>
-      </template>
-    </SFFormField>
+    <Form
+      @submit.prevent="() => console.log('submit')"
+    >
+      <SFFormField
+        :id="id"
+      >
+        <template #label>
+          Label
+        </template>
+        <template #default="props">
+          <SFInputField
+            v-model="modelValue"
+            v-bind="props"
+            name="email"
+            placeholder="Coucou"
+            :rules="validateEmail"
+          />
+        </template>
+      </SFFormField>
 
-    <SFButton type="submit">
-      Join the waitlist
-    </SFButton> -->
+      <SFButton
+        type="submit"
+      >
+        Join the waitlist
+      </SFButton>
+    </Form>
   </div>
 </template>

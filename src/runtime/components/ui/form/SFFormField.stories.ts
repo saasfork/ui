@@ -1,14 +1,13 @@
 import type { StoryObj } from '@storybook/vue3'
 import SFFormField from './SFFormField.vue'
 import SFInputField from './SFInputField.vue'
-import SFFormError from './SFFormError.vue'
 
 type StoryArgs = {
   modelValue: string
   id: string
   required: boolean
   placeholder: string
-  errorMessages?: string[]
+  labelHidden?: boolean
   hint?: string
 }
 
@@ -22,19 +21,17 @@ const meta = {
       },
       source: {
         code: `
-<SFFormField>
-  <template #label>
-    Label
-    </template>
-    <template #default="{ id }">
-      <SFInputField v-bind="{ id }"  />
-    </template>
-    <template #error>
-        <SFFormError v-for="error in args.errorMessages" :key="error">
-            {{ error }}
-        </SFFormError>
-    </template>
-</SFFormField>
+          <SFFormField>
+            <template #label>
+              Label
+              </template>
+              <template #default="{ id }">
+                <SFInputField v-bind="{ id }"  />
+              </template>
+              <template #hint>
+                  hint text
+              </template>
+          </SFFormField>
         `.trim(),
       },
     },
@@ -42,14 +39,6 @@ const meta = {
   argTypes: {
     id: {
       description: 'Field ID',
-      table: {
-        type: {
-          summary: 'string',
-        },
-      },
-    },
-    placeholder: {
-      description: 'Field placeholder',
       table: {
         type: {
           summary: 'string',
@@ -64,29 +53,35 @@ const meta = {
         },
       },
     },
+    labelHidden: {
+      description: 'Hide label',
+      table: {
+        type: {
+          summary: 'boolean',
+        },
+      },
+    },
   },
   render: (args: StoryArgs) => ({
-    components: { SFFormField, SFInputField, SFFormError },
+    components: { SFFormField, SFInputField },
     setup() {
       return { args }
     },
     template: `
-      <SFFormField v-bind="args">
-        <template #label>
-            Label
-        </template>
-        <template #default="props">
-          <SFInputField v-model="args.modelValue" :placeholder="args.placeholder" :required="args.required" v-bind="props"  />
-        </template>
-        <template #error>
-            <SFFormError v-for="error in args.errorMessages" :key="error">
-                {{ error }}
-            </SFFormError>
-        </template>
-        <template #hint>
-            {{ args.hint }}
-        </template>
-      </SFFormField>
+        <SFFormField v-bind="args">
+          <template #label>
+              Label
+          </template>
+          <template #default="props">
+            <SFInputField 
+            v-model="args.modelValue" 
+            :placeholder="args.placeholder" 
+            v-bind="props"  />
+          </template>
+          <template #hint>
+              {{ args.hint }}
+          </template>
+        </SFFormField>
 
       <p v-if="args.modelValue">Model value: {{ args.modelValue }}</p>
     `,
@@ -102,15 +97,7 @@ export const Default: Story = {
     required: true,
     id: 'input',
     placeholder: 'Placeholder',
-    errorMessages: [],
     hint: '',
-  },
-}
-
-export const InError: Story = {
-  args: {
-    ...Default.args,
-    errorMessages: ['Error message'],
   },
 }
 

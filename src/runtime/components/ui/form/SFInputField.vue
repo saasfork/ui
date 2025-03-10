@@ -5,6 +5,8 @@ const props = defineProps<{
   id: string
   type?: 'text' | 'email' | 'password' | 'number'
   autoComplete?: 'on' | 'off'
+  name: string
+  rules?: unknown
   isInError?: boolean
   placeholder?: string
   disabled?: boolean
@@ -20,18 +22,20 @@ const classes = computed(() => ({
 </script>
 
 <template>
-  <input
+  <Field
     :id="props.id"
     v-model="model"
     :placeholder="props.placeholder"
     :type="props.type || 'text'"
+    :name="props.name"
     :class="classes"
     :autocomplete="props.autoComplete || 'off'"
     :aria-invalid="!!props.isInError"
     :aria-required="!!props.required"
     :disabled="props.disabled"
     :required="props.required"
-  >
+    :rules="props.rules"
+  />
 </template>
 
 <style lang="scss" scoped>

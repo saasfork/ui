@@ -6,6 +6,7 @@ export default defineNuxtConfig({
     '@nuxtjs/tailwindcss',
     '@nuxtjs/storybook',
     '@nuxt/icon',
+    '@vee-validate/nuxt',
   ],
   devtools: { enabled: true },
   css: ['~/assets/styles.scss'],
