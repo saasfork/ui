@@ -1,8 +1,13 @@
 import type { StoryObj } from '@storybook/vue3'
 import SFNavbar from './SFNavbar.vue'
 
+type StoryArgs = {
+  links: Array<{ name: string, url: string }>
+  current: string
+}
+
 const meta = {
-  title: 'UI/SFNavbar',
+  title: 'UI/Navigation/SFNavbar',
   component: SFNavbar,
   parameters: {
     docs: {
@@ -29,7 +34,7 @@ const meta = {
       },
     },
   },
-  render: (args: Record<string, unknown>) => ({
+  render: (args: StoryArgs) => ({
     components: { SFNavbar },
     setup() {
       return { args }
