@@ -18,6 +18,8 @@
   "devDependencies": {
     "@chromatic-com/storybook": "^3.2.5",
     "@storybook/addon-essentials": "^8.6.4",
+    "@storybook/addon-interactions": "^8.6.4",
+    "@storybook/addon-links": "^8.6.4",
     "@storybook/blocks": "^8.6.4",
     "@storybook/core-common": "^8.6.4",
     "@storybook/experimental-addon-test": "^8.6.4",
