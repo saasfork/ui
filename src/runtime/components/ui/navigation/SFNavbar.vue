@@ -27,7 +27,10 @@ const toggleMenu = () => {
 <template>
   <nav>
     <div class="main">
-      <div class="mobile">
+      <div
+        v-if="props.links && props.links.length > 0"
+        class="mobile"
+      >
         <button
           :aria-expanded="open"
           aria-controls="mobile-menu"
