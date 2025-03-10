@@ -1,24 +1,39 @@
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 
-defineProps<{
+const props = defineProps<{
   links?: {
     name: string
     url: string
   }[]
-  current: string
+  current?: string
   logoTitle?: string
 }>()
 
 const open = ref(false)
+
+const activeLinks = computed(() =>
+  props.links?.map(link => ({
+    ...link,
+    isActive: link.url === props.current,
+  })) || [],
+)
+
+const toggleMenu = () => {
+  open.value = !open.value
+}
 </script>
 
 <template>
   <nav>
     <div class="main">
       <div class="mobile">
-        <button @click="open = !open">
-          <span class="sronly">Open main menu</span>
+        <button
+          :aria-expanded="open"
+          aria-controls="mobile-menu"
+          @click="toggleMenu"
+        >
+          <span class="sronly">{{ open ? 'Close' : 'Open' }} main menu</span>
 
           <svg
             fill="none"
@@ -38,32 +53,40 @@ const open = ref(false)
       </div>
       <div class="desktop">
         <div class="menus">
+          <!-- Logo -->
           <div
-            v-if="$slots.logo || logoTitle"
+            v-if="$slots.logo || props.logoTitle"
             class="logo"
           >
             <slot name="logo">
-              {{ logoTitle }}
+              {{ props.logoTitle }}
             </slot>
           </div>
+
+          <!-- Desktop links -->
           <div
-            v-if="links"
+            v-if="props.links"
             class="links"
           >
             <NuxtLink
-              v-for="link in links"
+              v-for="link in activeLinks"
               :key="link.url"
               :to="link.url"
-              :class="{ selected: current === link.url }"
+              :class="{ selected: link.isActive }"
             >
               {{ link.name }}
             </NuxtLink>
           </div>
         </div>
+
+        <!-- Desktop actions -->
         <div class="actions">
           <slot name="actions" />
         </div>
+      </div>
 
+      <!-- Mobile menu (outside desktop div) -->
+      <transition name="fade">
         <div
           v-show="open"
           id="mobile-menu"
@@ -71,11 +94,11 @@ const open = ref(false)
         >
           <div>
             <NuxtLink
-              v-for="link in links"
+              v-for="link in activeLinks"
               :key="link.url"
               :to="link.url"
-              :class="{ selected: current === link.url }"
-              @click="open = false"
+              :class="{ selected: link.isActive }"
+              @click="toggleMenu"
             >
               {{ link.name }}
             </NuxtLink>
@@ -85,7 +108,7 @@ const open = ref(false)
             </div>
           </div>
         </div>
-      </div>
+      </transition>
     </div>
   </nav>
 </template>
@@ -151,7 +174,21 @@ nav {
           @apply bg-indigo-50 border-indigo-500 text-indigo-700;
         }
       }
+
+      .actions {
+        @apply ml-4;
+      }
     }
   }
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  @apply transition-all duration-200 ease-in-out;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  @apply opacity-0 transform -translate-y-2;
 }
 </style>

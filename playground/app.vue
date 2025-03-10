@@ -1,20 +1,20 @@
 <script setup>
-// const links = [
-//   { name: 'Home', url: '/' },
-//   { name: 'About', url: '/about' },
-//   { name: 'Contact', url: '/contact' },
-// ]
+const links = [
+  { name: 'Home', url: '/' },
+  { name: 'About', url: '/about' },
+  { name: 'Contact', url: '/contact' },
+]
 
-const id = ref('input')
-const modelValue = ref('')
-const errorMessages = ref([
-  // 'This field is required',
-])
+// const id = ref('input')
+// const modelValue = ref('')
+// const errorMessages = ref([
+//   // 'This field is required',
+// ])
 </script>
 
 <template>
   <div>
-    <!-- <SFNavbar
+    <SFNavbar
       :links="links"
       :current="$route.path"
     >
@@ -39,9 +39,9 @@ const errorMessages = ref([
           size="1.4rem"
         />
       </template>
-    </SFNavbar> -->
+    </SFNavbar>
 
-    <SFFormField :id="id">
+    <!-- <SFFormField :id="id">
       <template #label>
         Label
       </template>
@@ -64,6 +64,6 @@ const errorMessages = ref([
 
     <SFButton type="submit">
       Join the waitlist
-    </SFButton>
+    </SFButton> -->
   </div>
 </template>
