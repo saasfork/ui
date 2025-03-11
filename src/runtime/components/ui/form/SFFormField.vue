@@ -52,7 +52,7 @@ const fieldProps = computed(() => ({
     value.value = val
     handleChange(val)
   },
-  'onBlur': (event) => {
+  'onBlur': (event: unknown) => {
     handleBlur(event)
     validate()
     setTouched(true)
@@ -77,24 +77,37 @@ const fieldProps = computed(() => ({
     <div class="input">
       <slot v-bind="fieldProps" />
     </div>
-    <div
-      v-if="!hasError && $slots.hint"
-      class="hint"
-    >
-      <p>
-        <slot name="hint" />
-      </p>
-    </div>
-    <div
-      v-if="hasError"
-      class="errors"
-    >
-      <p
 
-        class="error-message"
+    <!-- Conteneur unique pour hint et erreurs avec hauteur fixe -->
+    <div class="message-container">
+      <transition
+        name="fade"
+        mode="out-in"
       >
-        {{ errorMessage }}
-      </p>
+        <div
+          v-if="!hasError && $slots.hint"
+          key="hint"
+          class="hint"
+        >
+          <p>
+            <slot name="hint" />
+          </p>
+        </div>
+        <div
+          v-else-if="hasError"
+          key="error"
+          class="errors"
+        >
+          <p class="error-message">
+            {{ errorMessage }}
+          </p>
+        </div>
+        <div
+          v-else
+          key="empty"
+          class="empty-space"
+        />
+      </transition>
     </div>
   </div>
 </template>
@@ -108,22 +121,36 @@ label {
   }
 }
 
-.hint {
-  p {
-    @apply mt-2 text-sm text-gray-500;
-  }
-}
-
 .input {
   @apply mt-2;
 }
 
-.errors {
-  @apply mt-2 min-h-5;
+// Nouveau conteneur avec hauteur fixe
+.message-container {
+  @apply mt-2 min-h-[1.75rem]; // Hauteur fixe pour éviter les sauts
 
-  p {
-    @apply mt-2 text-sm text-red-600;
+  .hint p {
+    @apply text-sm text-gray-500;
   }
+
+  .errors p {
+    @apply text-sm text-red-600;
+  }
+
+  .empty-space {
+    @apply h-5; // Hauteur minimale pour éviter les sauts
+  }
+}
+
+// Animation pour une transition fluide
+.fade-enter-active,
+.fade-leave-active {
+  @apply transition-opacity duration-150;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  @apply opacity-0;
 }
 
 .ssrOnly {
