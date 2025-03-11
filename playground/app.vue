@@ -18,8 +18,8 @@ const onSubmit = (values) => {
       Inscription
     </h1>
 
-    <form
-      @submit.prevent="onSubmit"
+    <Form
+      @submit="onSubmit"
     >
       <!-- Champ Email -->
       <SFFormField
@@ -58,6 +58,6 @@ const onSubmit = (values) => {
           S'inscrire
         </SFButton>
       </div>
-    </form>
+    </Form>
   </div>
 </template>

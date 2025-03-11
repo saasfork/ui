@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useField } from 'vee-validate'
-import { computed, watch, ref, onMounted } from 'vue'
+import { computed, ref, onMounted } from 'vue'
 
 const props = defineProps<{
   id: string
@@ -12,7 +12,7 @@ const props = defineProps<{
   validateOnMount?: boolean
 }>()
 
-const { value, errorMessage, handleBlur, handleChange, meta, validate, setTouched } = useField(
+const { value, errorMessage, handleBlur, handleChange, validate, setTouched } = useField(
   () => props.name,
   props.rules || undefined,
   {

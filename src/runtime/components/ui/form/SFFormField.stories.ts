@@ -1,8 +1,6 @@
 import type { StoryObj } from '@storybook/vue3'
 import { ref } from 'vue'
 import * as yup from 'yup'
-import { Form } from 'vee-validate'
-import SFButton from '../button/SFButton.vue'
 import SFFormField from './SFFormField.vue'
 import SFInputField from './SFInputField.vue'
 
@@ -14,7 +12,7 @@ type StoryArgs = {
   placeholder: string
   labelHidden?: boolean
   hint?: string
-  rules?: any
+  rules?: unknown
   validateOnMount?: boolean
 }
 
@@ -109,7 +107,7 @@ const meta = {
     },
   },
   render: (args: StoryArgs) => ({
-    components: { SFFormField, SFInputField, SFButton },
+    components: { SFFormField, SFInputField },
     setup() {
       const submittedValue = ref('')
       const handleSubmit = (values: unknown) => {
@@ -193,13 +191,14 @@ export const WithValidationOnMount: Story = {
 
 export const Password: Story = {
   args: {
+    modelValue: '',
     id: 'password',
     name: 'password',
     required: true,
+    placeholder: 'Enter password',
     rules: yup.string()
       .required('Password is required')
       .min(8, 'Password must be at least 8 characters'),
-    placeholder: '••••••••',
     hint: 'Must be at least 8 characters',
   },
 }

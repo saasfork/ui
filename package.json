@@ -26,7 +26,8 @@
     "lint": "eslint .",
     "test": "vitest run",
     "test:watch": "vitest watch",
-    "test:types": "vue-tsc --noEmit && cd playground && vue-tsc --noEmit"
+    "test:types": "vue-tsc --noEmit && cd playground && vue-tsc --noEmit",
+    "release:patch": "npm version patch -m \"chore(deps) version %s\" && npm publish --access public"
   },
   "dependencies": {
     "@nuxt/kit": "^3.16.0"
