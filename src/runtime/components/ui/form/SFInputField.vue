@@ -6,23 +6,32 @@ const props = defineProps<{
   type?: 'text' | 'email' | 'password' | 'number'
   autoComplete?: 'on' | 'off'
   name: string
-  rules?: unknown
   isInError?: boolean
   placeholder?: string
   disabled?: boolean
   required?: boolean
 }>()
 
-const model = defineModel<string>()
+// Utiliser defineModel pour simplifier la gestion de v-model
+const model = defineModel<string>('modelValue')
+
+// Emit pour l'événement blur
+const emit = defineEmits<{
+  blur: [event: FocusEvent]
+}>()
 
 const classes = computed(() => ({
   'is-in-error': props.isInError,
   'disabled': props.disabled,
 }))
+
+const handleBlur = (event: FocusEvent) => {
+  emit('blur', event)
+}
 </script>
 
 <template>
-  <Field
+  <input
     :id="props.id"
     v-model="model"
     :placeholder="props.placeholder"
@@ -34,8 +43,8 @@ const classes = computed(() => ({
     :aria-required="!!props.required"
     :disabled="props.disabled"
     :required="props.required"
-    :rules="props.rules"
-  />
+    @blur="handleBlur"
+  >
 </template>
 
 <style lang="scss" scoped>

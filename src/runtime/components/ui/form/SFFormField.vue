@@ -1,29 +1,72 @@
 <script setup lang="ts">
-import { useFieldError } from 'vee-validate'
-import { computed, useSlots } from 'vue'
+import { useField } from 'vee-validate'
+import { computed, watch, ref, onMounted } from 'vue'
 
-defineProps<{
+const props = defineProps<{
   id: string
+  name: string
   labelHidden?: boolean
   required?: boolean
+  rules?: unknown | null
+  initialValue?: string
+  validateOnMount?: boolean
 }>()
 
-const slots = useSlots()
+const { value, errorMessage, handleBlur, handleChange, meta, validate, setTouched } = useField(
+  () => props.name,
+  props.rules || undefined,
+  {
+    initialValue: props.initialValue || '',
+    validateOnMount: props.validateOnMount || false,
+  },
+)
 
-const name = computed(() => {
-  const defaultSlot = slots.default?.()
-  if (!defaultSlot || defaultSlot.length === 0) return null
-  return defaultSlot[0].props?.name || null
+const hasError = computed(() => {
+  return !!errorMessage.value
 })
 
-const hasErrorContent = computed(() => !!useFieldError(name).value)
+const formSubmitted = ref(false)
+
+const forceValidateOnSubmit = () => {
+  let parent = document.getElementById(props.id)?.parentElement
+  while (parent && parent.tagName !== 'FORM') {
+    parent = parent.parentElement
+  }
+
+  if (parent) {
+    parent.addEventListener('submit', async () => {
+      formSubmitted.value = true
+      await validate()
+      setTouched(true)
+    })
+  }
+}
+
+onMounted(forceValidateOnSubmit)
+
+const fieldProps = computed(() => ({
+  'id': props.id,
+  'name': props.name,
+  'modelValue': value.value,
+  'onUpdate:modelValue': (val: string) => {
+    value.value = val
+    handleChange(val)
+  },
+  'onBlur': (event) => {
+    handleBlur(event)
+    validate()
+    setTouched(true)
+  },
+  'isInError': hasError.value,
+  'required': props.required,
+}))
 </script>
 
 <template>
   <div>
     <label
       :for="id"
-      :class="{ 'is-in-error': hasErrorContent, 'ssrOnly': labelHidden }"
+      :class="{ 'is-in-error': hasError, 'ssrOnly': labelHidden }"
     >
       <slot name="label" />
       <span
@@ -32,25 +75,26 @@ const hasErrorContent = computed(() => !!useFieldError(name).value)
       >*</span>
     </label>
     <div class="input">
-      <slot
-        :id="id"
-        :is-in-error="hasErrorContent"
-        :required="required"
-      />
+      <slot v-bind="fieldProps" />
     </div>
     <div
-      v-if="!hasErrorContent"
+      v-if="!hasError && $slots.hint"
       class="hint"
     >
       <p>
         <slot name="hint" />
       </p>
     </div>
-    <div class="errors">
-      <ErrorMessage
-        :name="name"
-        as="p"
-      />
+    <div
+      v-if="hasError"
+      class="errors"
+    >
+      <p
+
+        class="error-message"
+      >
+        {{ errorMessage }}
+      </p>
     </div>
   </div>
 </template>
@@ -66,7 +110,7 @@ label {
 
 .hint {
   p {
-    @apply mt-1 text-sm text-gray-500;
+    @apply mt-2 text-sm text-gray-500;
   }
 }
 
